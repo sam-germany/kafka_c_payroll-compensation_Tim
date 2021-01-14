@@ -1,17 +1,16 @@
 package com.course.microservice.broker.listener.saga_orchestration;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-
+import com.course.microservice.broker.message.BonusPaidMessage;
+import com.course.microservice.broker.message.PayBonusMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Component;
 
-import com.course.microservice.broker.message.BonusPaidMessage;
-import com.course.microservice.broker.message.PayBonusMessage;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Component
 public class PayBonusListener {
@@ -21,6 +20,7 @@ public class PayBonusListener {
 	@KafkaListener(topics = "t.saga03.payrollcompensation.request")
 	@SendTo(value = "t.saga03.payrollcompensation.response")
 	public BonusPaidMessage listenPayBonus(PayBonusMessage message) throws InterruptedException {
+
 		LOG.debug("[Orchestration-Saga] Listening pay bonus message for appraisal {}", message.getAppraisalId());
 
 		// ...
@@ -42,6 +42,7 @@ public class PayBonusListener {
 
 		LOG.debug("[Orchestration-Saga] Publishing to bonus payment response topic for appraisal {}",
 				bonusPaidMessage.getAppraisalId());
+
 		return bonusPaidMessage;
 	}
 
