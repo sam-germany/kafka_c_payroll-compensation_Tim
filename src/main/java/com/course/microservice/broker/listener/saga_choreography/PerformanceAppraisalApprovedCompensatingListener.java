@@ -1,17 +1,16 @@
 package com.course.microservice.broker.listener.saga_choreography;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-
+import com.course.microservice.broker.message.BonusPaidMessage;
+import com.course.microservice.broker.message.PerformanceAppraisalApprovedMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Component;
 
-import com.course.microservice.broker.message.BonusPaidMessage;
-import com.course.microservice.broker.message.PerformanceAppraisalApprovedMessage;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Component
 public class PerformanceAppraisalApprovedCompensatingListener {
@@ -20,10 +19,9 @@ public class PerformanceAppraisalApprovedCompensatingListener {
 
 	@KafkaListener(topics = "t.saga02.performancemanagement")
 	@SendTo(value = "t.saga02.payrollcompensation")
-	public BonusPaidMessage listenPerformanceAppraisal(PerformanceAppraisalApprovedMessage message)
-			throws InterruptedException {
-		LOG.debug("[Choreography-Compensating Saga] Listening performance approved message for appraisal {}",
-				message.getAppraisalId());
+	public BonusPaidMessage listenPerformanceAppraisal(PerformanceAppraisalApprovedMessage message) throws InterruptedException {
+
+		LOG.debug("[Choreography-Compensating Saga] Listening performance approved message for appraisal {}", message.getAppraisalId());
 
 		// ...
 		// do business logic here for performance appraisal message,
@@ -43,8 +41,8 @@ public class PerformanceAppraisalApprovedCompensatingListener {
 		bonusPaidMessage.setBonusPaidDateTime(LocalDateTime.of(LocalDate.of(2021, 06, 30), LocalTime.now()));
 		bonusPaidMessage.setPaidToBankAccount("9063772801");
 
-		LOG.debug("[Choreography-Compensating Saga] Publishing to next topic in saga for appraisal {}",
-				bonusPaidMessage.getAppraisalId());
+		LOG.debug("[Choreography-Compensating Saga] Publishing to next topic in saga for appraisal {}", bonusPaidMessage.getAppraisalId());
+
 		return bonusPaidMessage;
 	}
 
