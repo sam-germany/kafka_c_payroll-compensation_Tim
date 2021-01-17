@@ -23,7 +23,8 @@ public class CqrsPerformanceAppraisalApprovedListener {
 	@KafkaListener(topics = "t.cqrs01.performancemanagement")
 	@SendTo(value = "t.cqrs01.payrollcompensation")
 	public BonusPaidMessage listenPerformanceAppraisal(PerformanceAppraisalApprovedMessage message)
-			throws InterruptedException, JsonProcessingException {
+		                                                                	throws InterruptedException, JsonProcessingException {
+
 		LOG.debug("[CQRS-01] Listening performance approved message for appraisal {}", message.getAppraisalId());
 
 		var paidBonus = service.payPerformanceBonus(message);
